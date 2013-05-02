@@ -2,7 +2,7 @@
 
 
 
-TrajectoryGenerator:: TrajectoryGenerator() : omega(1.0)
+TrajectoryGenerator:: TrajectoryGenerator() : treshold(0.0), omega(1.0)
 {
   
   
@@ -44,16 +44,20 @@ double TrajectoryGenerator:: filter( double & x)
 double * TrajectoryGenerator:: generateSignal() {
   
   double t = 0.0;
-  double maxT = max_t;
+  double maxT = (signalLength-1)*dt;
+  
+  cout << "maxT = " <<maxT<<endl;
   
   while(t < maxT)
   {
     
+   double x = getX(t);
+   
+   double y = filter(x);
+   
+   cout << "t = " << t << "\tx(t)= " << x <<"\ty(x) = "<<y<<endl; 
     
-    
-    
-    
-    t+= dt;
+   t+= dt;
   } 
   
   

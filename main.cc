@@ -24,8 +24,16 @@ int main(int argc, char ** argv) {
     
     
     
+	TrajectoryGenerator * generator = new TrajectoryGenerator();
   
+	generator->setDt(0.01);
+	generator->setSignalLength(100);
+	
+	generator->generateSignal();
+	
   
+	
+	delete generator;
     cout << "asdf"<<endl;
     
     

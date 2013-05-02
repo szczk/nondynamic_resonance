@@ -12,6 +12,9 @@
 #include "core/Settings.hh"
 #include "core/Randoms.hh"
 
+#include "sim/TrajectoryGenerator.hh"
+
+
 
 using namespace std;
 

@@ -2,7 +2,8 @@
 #define __TRAJECTORY_GENERATOR_HH__
 
 #include <cmath>
-#include "core/Randoms.hh"
+#include "Randoms.hh"
+#include <iostream>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ private:
   double treshold;
   double omega;
   
+  unsigned long signalLength;
   
   double getX(double &t);
   double filter( double & );
@@ -34,6 +36,7 @@ public:
   double * generateSignal();
   
   
+  void setDt(double dt) { this->dt = dt; }
   
   void setTreshold(double t) { treshold = t; }
   double getTreshold() { return treshold; }
@@ -41,6 +44,10 @@ public:
   
   void setOmega(double o) { omega = o; }
   double getOmega() { return omega; }
+  
+  
+  void setSignalLength(unsigned long n) { signalLength = n;}
+  unsigned long getSignalLength() { return signalLength; }
 };
 
 

@@ -1,4 +1,4 @@
-DIRS := core 
+DIRS := core sim
 PROGNAME = main
 OBJDIR = obj
 .PHONY: all clean run test
