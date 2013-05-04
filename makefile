@@ -10,7 +10,7 @@ CPP = g++
 INCLUDEFLAGS := $(patsubst %, -I%, $(DIRS)) 
 LIBCC := $(shell find $(DIRS) -maxdepth 1 -name '*.cc')
 
-CXXFLAGS += $(shell root-config --cflags) -O3 -Wall
+# CXXFLAGS += $(shell root-config --cflags) -O3 -Wall
 CXXFLAGS += -O4 -Wall -std=c++0x -D_GLIBCXX_USE_NANOSLEEP 
 
 # XMLRPC = $(shell xmlrpc-c-config c++ libwww-client --libs)

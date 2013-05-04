@@ -2,7 +2,7 @@
 
 
 
-TrajectoryGenerator:: TrajectoryGenerator() : rand(nullptr), treshold(0.0), omega(2.0), noiseIntensity(1.0),alpha(2.0)
+TrajectoryGenerator:: TrajectoryGenerator() : rand(NULL), treshold(0.0), omega(2.0), noiseIntensity(1.0),alpha(2.0)
 {
   
   
