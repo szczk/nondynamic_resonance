@@ -51,7 +51,7 @@ do
     for threshold in 1.0 1.1 1.2 1.3 1.4 1.5 2.0
       do
 	  echo "alpha = $alpha, beta(skewness) = $skewness, threshold = $threshold"
-	  file="alpha_"$d"_beta_"$skewness"_tresh_"$threshold".pbs"
+	  file="alpha_"$alpha"_beta_"$skewness"_tresh_"$threshold".pbs"
 
 		  if [ ${USER} = "ufszczep" ];
 		  then
