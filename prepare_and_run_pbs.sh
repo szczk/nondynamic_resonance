@@ -42,6 +42,8 @@ echo "\n"
 
 # ${threads} --noise ${noise} --beta ${beta} --threshold ${threshold} --storage "${storage}" --tmp "${tmp}
 
+beta=0.0
+
 for alpha in 2.0
 do
   for skewness in 0.0
