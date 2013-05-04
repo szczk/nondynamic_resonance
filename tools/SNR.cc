@@ -5,8 +5,9 @@
 
   
 
-SNR:: SNR(unsigned int n, resultPrecisionType * val, paramsPrecisionType inputFQ, paramsPrecisionType DT )
+SNR:: SNR(unsigned int n, resultPrecisionType * val, paramsPrecisionType inputFQ, paramsPrecisionType DT , bool verbose = true)
 {
+  this->verbose = verbose;
   this->nPoints = n;
   this->values = val;
   this->inputSignalFrequency = inputFQ;
@@ -48,12 +49,17 @@ void SNR::findMaxValue()
     
     this->signalStrength = (double) this->values[index];
     
-    cout << "SNR: input signal frequency: " << this->inputSignalFrequency << endl;
-    cout << "match index:"<<index<< " ( index/(N*dt) = " << index/(2.0* ((double) nPoints)*dt)  << ")"<< endl;
-    
-    for(unsigned int j =  index - 4; j < index + 5 ;j++)
+    if(verbose)
     {
-     cout << "snr[" << j << " => f=" << setprecision(8) << j/(2.0* ((double) nPoints)*dt) <<"] = " << setprecision(5) <<values[j]<< endl;
+      cout << "SNR: input signal frequency: " << this->inputSignalFrequency << endl;
+      cout << "match index:"<<index<< " ( index/(N*dt) = " << index/(2.0* ((double) nPoints)*dt)  << ")"<< endl;
+      
+      
+      for(unsigned int j =  index - 4; j < index + 5 ;j++)
+      {
+      cout << "snr[" << j << " => f=" << setprecision(8) << j/(2.0* ((double) nPoints)*dt) <<"] = " << setprecision(5) <<values[j]<< endl;
+      }
+    
     }
     
 //     cout << "SNR: closest match ("<< indexes->size() <<"): f["<<this->maxValueIndex<<"] = " << this->frequencies[this->maxValueIndex] << endl;
@@ -67,14 +73,20 @@ void SNR::findMaxValue()
       
       if(nw > signalStrength)
       {
+        if(verbose)
+        {
 	cerr << "nw= "<< nw << ", signalStrength="<<signalStrength;
 	cerr <<", index = " << index << ", j = "<< j << endl;
-	
+        }
+        
 	index = j;
 	this->signalStrength = nw;
 	
+        if(verbose)
+        {
 	cout << " better max value found : ";
 	cout << "snr[" << j << " => f=" << setprecision(8) << j/(2.0* ((double) nPoints)*dt) <<"] = " << setprecision(5) <<values[j]<< endl;
+        }
       }
     }
     
@@ -117,13 +129,17 @@ void SNR::findMaxValue()
     }
     this->noiseMean_minVal =  ((double) (maxValueIndex - (M-1) ) )/( (((double)(2.0*this->nPoints*this->dt))));
     this->noiseMean_maxVal = ((double) (maxValueIndex + (M-1) ) )/( (((double)(2.0*this->nPoints*this->dt))));
+    
+    if(verbose)
+    {
     cout << "noiseMean_minVal = " <<  this->noiseMean_minVal << endl;
     cout << "noiseMean_maxVal = " <<  this->noiseMean_maxVal << endl;
+    }
     
 //     noiseMean = (noiseMean)/((double)nVal);
     noiseMean = mean_val;
     
-    cout <<" signal strength: " << this->signalStrength <<  "\t\tnoise mean="<< this->noiseMean <<endl;
+     if(verbose) cout <<" signal strength: " << this->signalStrength <<  "\t\tnoise mean="<< this->noiseMean <<endl;
 
     if( this->noiseMean != 0.0 )
     {
@@ -136,5 +152,5 @@ void SNR::findMaxValue()
     }
     
 //     cout << "noise mean: " << noiseMean << endl;
-     cout << "SNR value =  " << snrValue <<endl;
+     if(verbose) cout << "SNR value =  " << snrValue <<endl;
 }

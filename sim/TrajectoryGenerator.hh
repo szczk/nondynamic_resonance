@@ -23,6 +23,7 @@ private:
   double omega;
   double noiseIntensity;
   double alpha;
+  double skewness_beta;
   
   unsigned long signalLength;
   
@@ -52,6 +53,7 @@ public:
   
   void setAlpha(double a) { this->alpha = a; }
   
+  void setSkewness(double b) {this->skewness_beta = b; }
   
   void setSignalLength(unsigned long n) { signalLength = n;}
   unsigned long getSignalLength() { return signalLength; }

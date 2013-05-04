@@ -33,35 +33,43 @@ int main(int argc, char ** argv) {
     Randoms * rand = new Randoms();
     rand->reset();
     
-    double dt = 0.01;
-    unsigned long size = (unsigned long) pow(2.0,12.0);
-    double tresh = 2.0;
-    double omega = 2.0;
+    double dt = settings.get("dt");
+    double length_power = settings.get("signal_length_power");
+    unsigned long size = (unsigned long) pow(2.0,length_power);
+    double threshold = settings.get("treshold");
+    double omega = settings.get("omega");
+    double alpha = settings.get("levy_alpha");
+    double skewness = settings.get("levy_beta");
+    int repeats = settings.get("ntrajectories");
     
-    int repeats = 50;
-//     double sigma = 2.0;
     
-//     cout << "size=" <<size <<endl;
+    
+    
+    
+    double sigmaStart = settings.get("sigma_start");
+    double sigmaEnd = settings.get("sigma_end");
+    double sigmaInc = settings.get("sigma_inc");
+    
+
     
     TrajectoryGenerator * generator = new TrajectoryGenerator();
     generator->setRandoms(rand);
     generator->setOmega(omega);
     generator->setDt(dt);
     generator->setSignalLength(size);
+    generator->setAlpha(alpha);
+    generator->setSkewness(skewness);
     
     
-    generator->setAlpha(2.0);
+    const char * storagePath = settings.getStoragePath();
     
-    
-    double sigmaStart = 0.0;
-    double sigmaEnd = 7.0;
-    double sigmaInc = 0.05;
-    
-    
-    ofstream results("results.txt");
+    char results_filename[200];
+    sprintf(results_filename, "%salpha_%2.1f_beta_%2.1f_thr_%2.1f_results.txt" , storagePath, alpha, skewness, threshold );
+    ofstream results(results_filename, ios_base::out);
     
     for( double sigm = sigmaStart; sigm < sigmaEnd; sigm+=sigmaInc ) 
-    {
+    {	
+	    //if(sigm>2) sigmaInc = 0.4;
       
 	    generator->setNoiseIntensity(sigm);
       
@@ -72,8 +80,8 @@ int main(int argc, char ** argv) {
 	    
 	    for(int t = 0; t < repeats ; t++)
 	    {
-		cout << "----------------------------------------------------------"<<endl;
-		cout << "iter = " << t << endl;
+		//cout << "----------------------------------------------------------"<<endl;
+		//cout << "iter = " << t << endl;
 	      
 		double * signal = generator->generateSignal();
 		double * time = new double[size];
@@ -83,11 +91,11 @@ int main(int argc, char ** argv) {
 		for(unsigned int i = 0; i < size; i++)
 		{
 		  time[i] = i*dt;
-		  filtered[i] = filter( tresh, signal[i]);
+		  filtered[i] = filter( threshold, signal[i]);
 		}
 	    //     cout << "save" <<endl;
 	    //     System::saveArrays( "signal.txt", time, signal, size );
-		System::saveArrays( "filtered.txt", time, filtered, size );
+// 		System::saveArrays( "filtered.txt", time, filtered, size );
 	    // 
 	    //     
 	    //     cout << "fft" <<endl;
@@ -119,8 +127,6 @@ int main(int argc, char ** argv) {
 		
 		
 		
-		
-		
 	    //     cout << "del signal" <<endl;
 		delete[] signal;
 	    //     cout << "del time" <<endl;
@@ -138,14 +144,14 @@ int main(int argc, char ** argv) {
 	    }
 	    double * averageSpectrum = avps->getAverage();
 	    
-	    	cout << "fq"<<endl;
-	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
-	        cout << "save" <<endl;
-	        System::saveArray( "freqs.txt", freqs, spectrumSize );
+// 	    	cout << "fq"<<endl;
+// 	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
+// 	        cout << "save" <<endl;
+// 	        System::saveArray( "freqs.txt", freqs, spectrumSize );
 	    
-		System::saveArray( "pspectrum.txt", averageSpectrum, spectrumSize );
+// 		System::saveArray( "pspectrum.txt", averageSpectrum, spectrumSize );
 	    
-	    SNR snr(spectrumSize, averageSpectrum, omega, dt );
+	    SNR snr(spectrumSize, averageSpectrum, omega, dt , false);
 	    double snrVal = snr.getSNR();
 	    
 	    results << sigm << "\t" << snrVal <<"\n";
@@ -156,9 +162,12 @@ int main(int argc, char ** argv) {
 	    cout << flush;
 	    
 	    delete averageSpectrum;
+            delete avps;
     }
     
     results.close();
+    
+    cout << "results saved to '" << results_filename <<"'"<<endl;
     
      //    cout << "del filtered" <<endl;
     //delete[] filtered;

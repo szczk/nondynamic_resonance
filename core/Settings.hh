@@ -68,6 +68,11 @@ public:
         return this->parameters[key];
     }
 
+    void set(const char * key, paramsType value)
+    {
+        this->parameters[key] = value;
+    }
+    
     unsigned int getNtrajectories() {
         return ((unsigned int) this->get("ntrajectories"));
     }
@@ -105,60 +110,7 @@ public:
         this->parameters["beta"] = beta;
     }
 
-
-    paramsType getA() {
-        return this->parameters["PARAM_A"];
-    }
-    paramsType getB() {
-        return this->parameters["PARAM_B"];
-    }
-    paramsType getA0() {
-        return this->parameters["PARAM_A0"];
-    }
-
-    void setA0(paramsType a0) {
-        this->parameters["PARAM_A0"] = a0;
-    }
-
-    paramsType getPhase() {
-        return this->parameters["PHASE"];
-    }
-
-    void setPhase(paramsType phase) {
-        this->parameters["PHASE"] = phase;
-    }
-
-    paramsType getFrequency() {
-        return this->parameters["FREQ_Q"];
-    }
-
-    void setFrequency( paramsType freq ) {
-        this->parameters["FREQ_Q"] = freq;
-    }
     
-    
-    paramsType getPeriod() {
-		return 1.0/(this->getFrequency());
-	}
-
-    paramsType getNoiseIntensity() {
-        return this->parameters["NOISE_D"];
-    }
-
-    void setNoiseIntensity(paramsType d)
-    {
-        this->parameters["NOISE_D"] = d;
-    }
-    
-    
-    paramsType getX0() {
-		return this->parameters["X0"];
-	}
-	
-	void setX0(paramsType x0) {
-		this->parameters["X0"] = x0;
-	}
-
     /**
      * Read command line parameters, can be used to overwrite loaded params
      */

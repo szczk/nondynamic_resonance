@@ -39,8 +39,10 @@ private:
   
   void findMaxValue();
   
+  bool verbose;
+  
 public:
-  SNR(unsigned int npoints, resultPrecisionType * values, paramsPrecisionType inputSignalFrequency, paramsPrecisionType dt );
+  SNR(unsigned int npoints, resultPrecisionType * values, paramsPrecisionType inputSignalFrequency, paramsPrecisionType dt , bool verbose );
   ~SNR();
   
   
@@ -56,6 +58,7 @@ public:
   double getNoiseMeanMinVal(){return this->noiseMean_minVal;}
   double getNoiseMeanMaxVal(){return this->noiseMean_maxVal;}
   
+  void setVerbose(bool v) { this->verbose = v; }
 };
 
 #endif

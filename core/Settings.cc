@@ -20,27 +20,17 @@ void Settings::readCommandLineParameters(int argc, char** argv)
         if ( strcmp ("--alpha",argv[i]) == 0  && (i+1) < argc )
         {
             cout << " new alpha: " << atof(argv[i+1]) <<endl;
-            this->setJumpsParameter( atof(argv[i+1])) ;
+            this->set("levy_alpha", atof(argv[i+1])) ;
         }
         if ( strcmp ("--beta",argv[i]) == 0  && (i+1) < argc )
         {
             cout << " new beta: " << atof(argv[i+1]) <<endl;
-            this->setWaitingTimesParameter( atof(argv[i+1])) ;
+            this->set("levy_beta", atof(argv[i+1])) ;
         }
-        if ( strcmp ("--freq",argv[i]) == 0  && (i+1) < argc )
+        if ( strcmp ("--omega",argv[i]) == 0  && (i+1) < argc )
         {
-            cout << " new frequency: " << atof(argv[i+1]) <<endl;
-            this->setFrequency(atof(argv[i+1])) ;
-        }
-        if ( strcmp ("--A0",argv[i]) == 0  && (i+1) < argc )
-        {
-            cout << " new A0: " << atof(argv[i+1]) <<endl;
-            this->setA0(atof(argv[i+1])) ;
-        }
-        if ( strcmp ("--noise",argv[i]) == 0  && (i+1) < argc )
-        {
-            cout << " new D: " << atof(argv[i+1]) <<endl;
-            this->setNoiseIntensity(atof(argv[i+1])) ;
+            cout << " new omega: " << atof(argv[i+1]) <<endl;
+            this->set("omega", atof(argv[i+1])) ;
         }
 
         if ( strcmp ("--tmp",argv[i]) == 0  && (i+1) < argc )
@@ -57,7 +47,7 @@ void Settings::readCommandLineParameters(int argc, char** argv)
         
         if ( strcmp ("--n",argv[i]) == 0  && (i+1) < argc )
         {
-            cout << " new ntrajectories: '" << argv[i+1] << "'" << endl;
+            cout << " new n: '" << argv[i+1] << "'" << endl;
             this->setNtrajectories(atoi(argv[i+1]));
         }
         
@@ -67,6 +57,12 @@ void Settings::readCommandLineParameters(int argc, char** argv)
             this->setNumThreads(atoi(argv[i+1]));
         }
 
+        if ( strcmp ("--threshold",argv[i]) == 0  && (i+1) < argc )
+        {
+            cout << " new threshold: '" << argv[i+1] << "'" << endl;
+            this->set("treshold",atof(argv[i+1]));
+        }
+        
     }
 }
 

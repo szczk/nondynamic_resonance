@@ -1,63 +1,36 @@
-ntrajectories= 15000
-
-
-starttime=0.0
+# repeates
+ntrajectories= 1
 
 # time step
-dt = 1.0e-3
+dt = 1.0e-2
 
+#signal length =  2^n
+signal_length_power = 22
 
-# x0
-X0 = 0.0
+#treshold
+treshold = 1.0
 
-# sigma for gaussian noise
-GAUSS_SIGMA = 1.0
+# sinus signal frequency
+omega = 2.0
 
-#noise intensity
-T = 1.0
+#alha-stable noise alpha parameter
+levy_alpha = 2.0
 
-# path length 
+#alpha-stable noise beta parameter (distribution skewness)
+levy_beta = 0.0
 
-L = 1.0
+#noise intensity start
+sigma_start = 0.0
 
+#noise intensity end
+sigma_end = 9.0
 
-
-# e plus e minus
-# actual value of E+ E-
-# is  E+ = eplus * T
-# E- = eminus * T
-
-eplus=8.0
-eminus=0.0
-
+#noise intensity step
+sigma_inc = 0.05;
 
 #############################################
-# not used for now
 
 
 
 
-#jumps parameter (superdiffusion)
-# alpha = 2.0
-
-
-# force parameters
-
-# PARAM_A = 1.0;
-# PARAM_B = 1.0;
-
-# parameter 'A0'  , in kosko: 'epsilon'
-# PARAM_A0 = 0.125
-
-# parameter 'Q'  in kosko: f_0
-# FREQ_Q  = 0.01
-
-# parameter 'fi'
-#PHASE = 0.0
-   
-# npoints: num_of_periods* (2^(length_power) )
-# length_power = 22
-# num_of_periods = 1
-  
-# waiting times parameter ( subdiffusion )
-# beta = 1.0
+ 

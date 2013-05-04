@@ -15,7 +15,7 @@ AveragePowerSpectrum:: AveragePowerSpectrum()
 
 AveragePowerSpectrum:: ~AveragePowerSpectrum()
 {
-  cout << "delete AVPS"<<endl;
+//   cout << "delete AVPS"<<endl;
   for(unsigned int i =0; i< this->inputValues->size();i++)
   {
     resultPrecisionType * k  = this->inputValues->at(i);
@@ -54,7 +54,7 @@ void AveragePowerSpectrum:: calculateAverage()
   this->prepare();
   if(this->nValueSets>0)
   {
-    cout << "-averaging " << this->nValueSets << " datasets. "<<endl;
+    //cout << "-averaging " << this->nValueSets << " datasets. "<<endl;
     vector<resultPrecisionType*>::iterator it ;
     
 //     long resultPrecisionType * sums = new long resultPrecisionType[this->size]; 
