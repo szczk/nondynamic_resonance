@@ -1,4 +1,4 @@
-DIRS := core sim
+DIRS := core sim tools
 PROGNAME = main
 OBJDIR = obj
 .PHONY: all clean run test
@@ -14,10 +14,9 @@ CXXFLAGS += $(shell root-config --cflags) -O3 -Wall
 CXXFLAGS += -O4 -Wall -std=c++0x -D_GLIBCXX_USE_NANOSLEEP 
 
 # XMLRPC = $(shell xmlrpc-c-config c++ libwww-client --libs)
-# OTHERLIBS = -lMinuit -lSpectrum -lpq -lfftw3 -lz
+#OTHERLIBS = -lMinuit -lSpectrum -lpq -lfftw3 -lz
 
-GSLLIBS = -lgsl -lgslcblas 
-#-lfftw3_threads -lfftw3 -lfftw3f
+GSLLIBS = -lgsl -lgslcblas -lfftw3_threads -lfftw3 -lfftw3f
 
 
 LDFLAGS += $(shell root-config --glibs) $(GSLLIBS) $(XMLRPC) -O3 -Wall

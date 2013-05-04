@@ -14,6 +14,9 @@
 
 #include "sim/TrajectoryGenerator.hh"
 
+#include "tools/PowerSpectrum2d.hh"
+#include "tools/SNR.hh"
+
 
 
 using namespace std;

@@ -5,7 +5,6 @@
 Randoms:: Randoms()
 {
 //     cout << "creating Randoms " <<endl;
-    srand(time(0));
     this->init();
 }
 

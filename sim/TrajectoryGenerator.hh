@@ -15,11 +15,14 @@ using namespace std;
 class TrajectoryGenerator {
 
 private:
+  Randoms * rand;
 
   double dt;
   double max_t;
   double treshold;
   double omega;
+  double noiseIntensity;
+  double alpha;
   
   unsigned long signalLength;
   
@@ -36,6 +39,8 @@ public:
   double * generateSignal();
   
   
+  void setRandoms(Randoms * r) { this->rand = r; }
+  
   void setDt(double dt) { this->dt = dt; }
   
   void setTreshold(double t) { treshold = t; }
@@ -45,9 +50,13 @@ public:
   void setOmega(double o) { omega = o; }
   double getOmega() { return omega; }
   
+  void setAlpha(double a) { this->alpha = a; }
+  
   
   void setSignalLength(unsigned long n) { signalLength = n;}
   unsigned long getSignalLength() { return signalLength; }
+  
+  void setNoiseIntensity(double s) { noiseIntensity = s; }
 };
 
 
