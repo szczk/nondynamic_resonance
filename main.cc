@@ -31,12 +31,15 @@ int main(int argc, char ** argv) {
     
   
     Randoms * rand = new Randoms();
+    rand->reset();
     
     double dt = 0.01;
-    unsigned long size = (unsigned long) pow(2.0,24.0);
-    double tresh = 1.0;
+    unsigned long size = (unsigned long) pow(2.0,12.0);
+    double tresh = 2.0;
     double omega = 2.0;
-    double sigma = 2.0;
+    
+    int repeats = 50;
+//     double sigma = 2.0;
     
 //     cout << "size=" <<size <<endl;
     
@@ -45,67 +48,117 @@ int main(int argc, char ** argv) {
     generator->setOmega(omega);
     generator->setDt(dt);
     generator->setSignalLength(size);
-    generator->setNoiseIntensity(sigma);
+    
     
     generator->setAlpha(2.0);
     
     
+    double sigmaStart = 0.0;
+    double sigmaEnd = 7.0;
+    double sigmaInc = 0.05;
     
-
-    double * signal = generator->generateSignal();
-    double * time = new double[size];
     
-    double * filtered = new double[size];
-   
-    for(unsigned int i = 0; i < size; i++)
+    ofstream results("results.txt");
+    
+    for( double sigm = sigmaStart; sigm < sigmaEnd; sigm+=sigmaInc ) 
     {
-      time[i] = i*dt;
-      filtered[i] = filter( tresh, signal[i]);
-    }
-//     cout << "save" <<endl;
-//     System::saveArrays( "signal.txt", time, signal, size );
-//     System::saveArrays( "filtered.txt", time, filtered, size );
-// 
-//     
-//     cout << "fft" <<endl;
-//     
-    PowerSpectrum2d * pSpec = new PowerSpectrum2d( filtered, size );
-    pSpec->setDt(dt);
-    pSpec->evaluate();
-    pSpec->info();
-    
-//     cout << "spec"<<endl;
-    double * spectrum = pSpec->getValues();
-    
-    int spectrumSize = pSpec->getK();
-//     cout << "save" << endl;
-//     System::saveArray( "pspectrum.txt", spectrum, spectrumSize );
-    
-//     cout << "fq"<<endl;
-//     double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
-//     cout << "save" <<endl;
-//     System::saveArray( "freqs.txt", freqs, spectrumSize );
-    
-//     cout << "snr"<<endl;
-    SNR snr(spectrumSize, spectrum, omega, dt );
-    
-    snr.getSNR();
-    
-    
-//     cout << "del signal" <<endl;
-    delete[] signal;
-//     cout << "del time" <<endl;
-    delete[] time;
+      
+	    generator->setNoiseIntensity(sigm);
+      
 
-//     cout << "del freqs" <<endl;
-//     delete[] freqs; 
+	    AveragePowerSpectrum * avps = new AveragePowerSpectrum();
+	    
+	    int spectrumSize = 0;
+	    
+	    for(int t = 0; t < repeats ; t++)
+	    {
+		cout << "----------------------------------------------------------"<<endl;
+		cout << "iter = " << t << endl;
+	      
+		double * signal = generator->generateSignal();
+		double * time = new double[size];
+		
+		double * filtered = new double[size];
+	      
+		for(unsigned int i = 0; i < size; i++)
+		{
+		  time[i] = i*dt;
+		  filtered[i] = filter( tresh, signal[i]);
+		}
+	    //     cout << "save" <<endl;
+	    //     System::saveArrays( "signal.txt", time, signal, size );
+		System::saveArrays( "filtered.txt", time, filtered, size );
+	    // 
+	    //     
+	    //     cout << "fft" <<endl;
+	    //     
+		PowerSpectrum2d * pSpec = new PowerSpectrum2d( filtered, size );
+		pSpec->setVerbose(false);
+		pSpec->setDt(dt);
+		pSpec->evaluate();
+// 		pSpec->info();
+		
+	    //     cout << "spec"<<endl;
+		double * spectrum = pSpec->getValues();
+		
+		spectrumSize = pSpec->getK();
+		
+		avps->setSize(spectrumSize);
+		
+		avps->addValues(spectrum);
+		
+	    //     cout << "save" << endl;
+	    //     System::saveArray( "pspectrum.txt", spectrum, spectrumSize );
+		
+	    //     cout << "fq"<<endl;
+	    //     double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
+	    //     cout << "save" <<endl;
+	    //     System::saveArray( "freqs.txt", freqs, spectrumSize );
+		
+	    //     cout << "snr"<<endl;
+		
+		
+		
+		
+		
+	    //     cout << "del signal" <<endl;
+		delete[] signal;
+	    //     cout << "del time" <<endl;
+		delete[] time;
+
+	    //     cout << "del freqs" <<endl;
+	    //     delete[] freqs; 
+		
+	    //     cout << "del spectrum" << endl;
+		//delete[] spectrum;
+		
+	    //     cout << "del pSpec" <<endl;
+		delete pSpec;
+	    
+	    }
+	    double * averageSpectrum = avps->getAverage();
+	    
+	    	cout << "fq"<<endl;
+	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
+	        cout << "save" <<endl;
+	        System::saveArray( "freqs.txt", freqs, spectrumSize );
+	    
+		System::saveArray( "pspectrum.txt", averageSpectrum, spectrumSize );
+	    
+	    SNR snr(spectrumSize, averageSpectrum, omega, dt );
+	    double snrVal = snr.getSNR();
+	    
+	    results << sigm << "\t" << snrVal <<"\n";
+	    
+	    cout << "****************************************\n";
+	    cout << "sigma = " << sigm << "\t SNR = " << snrVal <<"\n";
+	    cout << "****************************************\n";
+	    cout << flush;
+	    
+	    delete averageSpectrum;
+    }
     
-//     cout << "del spectrum" << endl;
-    delete[] spectrum;
-    
-//     cout << "del pSpec" <<endl;
-    delete pSpec;
-    
+    results.close();
     
      //    cout << "del filtered" <<endl;
     //delete[] filtered;

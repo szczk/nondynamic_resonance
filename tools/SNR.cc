@@ -84,12 +84,14 @@ void SNR::findMaxValue()
     
     // find noise level
     int nVal = 0;
-    unsigned int M = 14;
+    unsigned int M = 44;
     long double mean_val = 0.0;
     
 //     long double check = 0.0;
     
-    for(unsigned int j = 3; j < M ; j++)
+    
+    
+    for(unsigned int j = 33; j < M ; j++)
     {
 //       cout << "this->values[maxValueIndex - j]="<<this->values[maxValueIndex - j] <<"\t this->values[maxValueIndex + j]="<<this->values[maxValueIndex + j]<< endl;
 //       noiseMean+= (this->values[maxValueIndex - j]  + this->values[maxValueIndex + j]);

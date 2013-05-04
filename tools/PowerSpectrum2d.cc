@@ -17,10 +17,12 @@ PowerSpectrum2d:: PowerSpectrum2d(double * input, unsigned int n)
 //  this->prepareComplexData();
  this->verbose = true;
  
- for(int i=0;i<10;i++)
- {
-  cout << "fftinput["<<i<<"] ="<<fft_input[i]<<endl; 
- }
+ 
+//  for(int i=0;i<10;i++)
+//  {
+//   cout << "fftinput["<<i<<"] ="<<fft_input[i]<<endl; 
+//  }
+ 
 }
 
 
@@ -111,7 +113,7 @@ void PowerSpectrum2d:: calculateFFT()
   int numThreads = 4;
   
   int init = fftw_init_threads();
-  cout << "fftw_init_threads() = " << init <<endl;
+  if(verbose) cout << "fftw_init_threads() = " << init <<endl;
   
   
    // allocate output
@@ -156,10 +158,10 @@ void PowerSpectrum2d:: calculatePowerSpectrum()
 
 void PowerSpectrum2d:: evaluate()
 {
-  cout << "- calculating FFT... "<<endl;
+  if(verbose) cout << "- calculating FFT... "<<endl;
   this->calculateFFT();
   
-  cout << "- calculating PS..." << endl;
+  if(verbose) cout << "- calculating PS..." << endl;
   this->calculatePowerSpectrum();
 }
 

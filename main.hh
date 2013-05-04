@@ -16,6 +16,7 @@
 
 #include "tools/PowerSpectrum2d.hh"
 #include "tools/SNR.hh"
+#include "tools/AveragePowerSpectrum.hh"
 
 
 

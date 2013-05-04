@@ -19,8 +19,8 @@ TrajectoryGenerator:: ~TrajectoryGenerator()
 double TrajectoryGenerator:: getX(double &t)
 {
   double signal = sin( 2 * M_PI * omega * t);
-  
-  double noise = noiseIntensity *  rand->getLevyStable( alpha, 0.0, 1.0/sqrt(2.0), 0.0);
+  //M_SQRT1_2
+  double noise = noiseIntensity *  rand->getLevyStable( alpha, 0.0, 1.0 , 0.0);
   
   
   return signal + noise;
@@ -47,7 +47,7 @@ double * TrajectoryGenerator:: generateSignal() {
   double t = 0.0;
   double maxT = (signalLength-1)*dt;
   
-   cout << "maxT = " <<maxT<< " \t " << signalLength-1 << endl;
+   cout << "maxT = " <<maxT<< " \t " << signalLength-1 << "\talpha=" << alpha << "\tnoise=" << noiseIntensity << endl;
   
   
   double * traj = new double[signalLength];
