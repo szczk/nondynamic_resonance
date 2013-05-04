@@ -22,7 +22,7 @@
 #          Set the name of the job (up to 15 characters, 
 #          no blank spaces, start with alphanumeric character)
 
-#PBS -N subdif_b${beta}_d_${noise}
+#PBS -N nondynamic_a${alpha}_th${threshold}
 
 #          By default, the standard output and error streams are sent
 #          to files in the current working directory with names:
