@@ -1,11 +1,19 @@
 #! /bin/bash
 
 #cd ~/mean_passages2/
-module add gcc/4.5.3
 
-module add fftw/3.3.2-gnu
+
+if [ ${USER} = "ufszczep" ];
+then
+module add gcc/4.5.3
+module add fftw
 
 make -f makefile_zeus
+else
+make
+fi
+
+
 # /software/local/libs/FFTW/3.3.2/gnu/double-prec/include/
 rm *.png
 rm *.txt
