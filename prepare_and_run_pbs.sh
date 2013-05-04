@@ -2,8 +2,11 @@
 
 #cd ~/mean_passages2/
 module add gcc/4.5.3
-make
 
+module add fftw/3.3.2-gnu
+
+make -f makefile_zeus
+# /software/local/libs/FFTW/3.3.2/gnu/double-prec/include/
 rm *.png
 rm *.txt
 touch jobs_ids.txt
