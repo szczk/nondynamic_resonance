@@ -1,11 +1,11 @@
 # repeates
-ntrajectories= 1
+ntrajectories= 20
 
 # time step
 dt = 1.0e-2
 
 #signal length =  2^n
-signal_length_power = 22
+signal_length_power = 20
 
 #treshold
 treshold = 1.0
