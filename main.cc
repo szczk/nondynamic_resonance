@@ -64,7 +64,7 @@ int main(int argc, char ** argv) {
     const char * storagePath = settings.getStoragePath();
     
     char results_filename[200];
-    sprintf(results_filename, "%salpha_%2.1f_beta_%2.1f_thr_%2.1f_results.txt" , storagePath, alpha, skewness, threshold );
+    sprintf(results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_results.txt" , storagePath, alpha, skewness, threshold );
     ofstream results(results_filename, ios_base::out);
     
     for( double sigm = sigmaStart; sigm < sigmaEnd; sigm+=sigmaInc ) 
