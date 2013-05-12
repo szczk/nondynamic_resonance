@@ -1,5 +1,5 @@
 # repeates
-ntrajectories= 20
+ntrajectories= 500
 
 # time step
 dt = 1.0e-2
@@ -8,7 +8,7 @@ dt = 1.0e-2
 signal_length_power = 20
 
 #treshold
-treshold = 1.0
+treshold = 2.0
 
 # sinus signal frequency
 omega = 2.0
@@ -23,10 +23,10 @@ levy_beta = 0.0
 sigma_start = 0.0
 
 #noise intensity end
-sigma_end = 9.0
+sigma_end = 3.4
 
 #noise intensity step
-sigma_inc = 0.05;
+sigma_inc = 0.1;
 
 #############################################
 
