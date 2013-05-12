@@ -44,11 +44,11 @@ echo "\n"
 
 
 
-for alpha in $(seq -w 0.8 0.2 2.0)
+for alpha in 2.0 #$(seq -w 0.8 0.2 2.0)
 do
-  for beta in $(seq -w -1.0 0.25 1.0)
+  for beta in 0.0 #$(seq -w -1.0 0.25 1.0)
   do
-    for threshold in 1.0 1.1 1.2 1.3 1.4 1.5 2.0
+    for threshold in 1.0 1.1 1.2 1.4 1.5 2.0
       do
 	  echo "alpha = $alpha, beta(skewness) = $beta, threshold = $threshold"
 	  file="alpha_"$alpha"_beta_"$beta"_tresh_"$threshold".pbs"
