@@ -67,6 +67,11 @@ int main(int argc, char ** argv) {
     sprintf(results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_results.txt" , storagePath, alpha, skewness, threshold );
     ofstream results(results_filename, ios_base::out);
     
+	char frequencies_filename[200];
+	char spectrum_filename[200];
+	char plot_filename[200];
+	char psplot_filename[200];
+	
     for( double sigm = sigmaStart; sigm < sigmaEnd; sigm+=sigmaInc ) 
     {	
 	    //if(sigm>2) sigmaInc = 0.4;
@@ -144,14 +149,35 @@ int main(int argc, char ** argv) {
 	    }
 	    double * averageSpectrum = avps->getAverage();
 	    
+		SNR snr(spectrumSize, averageSpectrum, omega, dt , true);
+		
+		
 // 	    	cout << "fq"<<endl;
-// 	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
-// 	        cout << "save" <<endl;
-// 	        System::saveArray( "freqs.txt", freqs, spectrumSize );
+	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
 	    
-// 		System::saveArray( "pspectrum.txt", averageSpectrum, spectrumSize );
+			
+// 			cout << "save" <<endl;
+			 sprintf(frequencies_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_freq.txt" , storagePath, alpha, skewness, threshold , sigm);	
+
+	        System::saveArray( frequencies_filename, freqs, spectrumSize );
 	    
-	    SNR snr(spectrumSize, averageSpectrum, omega, dt , false);
+			
+			
+
+	    sprintf(spectrum_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_pspectr.txt" , storagePath, alpha, skewness, threshold , sigm);	
+		System::saveArray( spectrum_filename, averageSpectrum, spectrumSize );
+	    
+		
+		
+		sprintf(plot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.gn" , storagePath, alpha, skewness, threshold , sigm);
+		GnuplotScriptMaker * scriptMaker = new GnuplotScriptMaker(plot_filename);
+		
+		
+	    
+		
+		sprintf(psplot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.png" , storagePath, alpha, skewness, threshold ,sigm );
+		scriptMaker->addPowerSpectrumPlot(frequencies_filename, spectrum_filename, psplot_filename, &snr);
+		
 	    double snrVal = snr.getSNR();
 		
 		double eta = snr.getSpectralAmplification();
@@ -164,7 +190,8 @@ int main(int argc, char ** argv) {
 	    cout << flush;
 	    
 	    delete averageSpectrum;
-            delete avps;
+        delete avps;
+		delete scriptMaker;
     }
     
     results.close();

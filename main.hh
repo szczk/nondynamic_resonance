@@ -18,7 +18,7 @@
 #include "tools/SNR.hh"
 #include "tools/AveragePowerSpectrum.hh"
 
-
+#include "tools/GnuplotScriptMaker.hh" 
 
 using namespace std;
 
