@@ -37,6 +37,8 @@ private:
   paramsPrecisionType dt;
   double snrValue;
   
+  double spectralAmplificationValue;
+  
   void findMaxValue();
   
   bool verbose;
@@ -54,6 +56,12 @@ public:
   double getMaxValue() { return this->maxValue; }
   int getMaxValueIndex() { return this->maxValueIndex; }
   double getSNR() { return this->snrValue; }
+  
+  double getSpectralAmplification() { 
+	if(spectralAmplificationValue < 1.0e-100) spectralAmplificationValue = 0.0;
+	return this->spectralAmplificationValue; 
+  }
+  
   
   double getNoiseMeanMinVal(){return this->noiseMean_minVal;}
   double getNoiseMeanMaxVal(){return this->noiseMean_maxVal;}

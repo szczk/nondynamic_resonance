@@ -153,11 +153,13 @@ int main(int argc, char ** argv) {
 	    
 	    SNR snr(spectrumSize, averageSpectrum, omega, dt , false);
 	    double snrVal = snr.getSNR();
+		
+		double eta = snr.getSpectralAmplification();
 	    
-	    results << sigm << "\t" << snrVal <<"\n";
+	    results << sigm << "\t" << snrVal << "\t" << eta <<"\n";
 	    
 	    cout << "****************************************\n";
-	    cout << "sigma = " << sigm << "\t SNR = " << snrVal <<"\n";
+	    cout << "sigma = " << sigm << "\t spectral ampl=" << eta <<"\t SNR = " << snrVal <<"\n";
 	    cout << "****************************************\n";
 	    cout << flush;
 	    

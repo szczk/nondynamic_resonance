@@ -82,6 +82,8 @@ void SNR::findMaxValue()
 	index = j;
 	this->signalStrength = nw;
 	
+
+	
         if(verbose)
         {
 	cout << " better max value found : ";
@@ -151,6 +153,13 @@ void SNR::findMaxValue()
      cerr<< " SNR:: noiseMean = 0! " <<endl;
     }
     
+    
+    //there are other ways to calculate spectral amplification
+	// but simplest is just to take peak value
+	this->spectralAmplificationValue = this->signalStrength - this->noiseMean;
+    
+	
+	
 //     cout << "noise mean: " << noiseMean << endl;
      if(verbose) cout << "SNR value =  " << snrValue <<endl;
 }

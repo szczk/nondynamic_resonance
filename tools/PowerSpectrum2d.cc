@@ -140,13 +140,18 @@ void PowerSpectrum2d:: calculatePowerSpectrum()
 {
   int array_size = this->K;
  
-  double norm = 1.0;///(nPoints*nPoints); //  1.0/sqrt(this->nPoints);    
+//   double h = ((double) nPoints* ( double) nPoints);
+//   cout << "nPoints="<< nPoints << "\tnPoints*nPoints = " << nPoints*nPoints << "\th = " <<h << endl;
+  double norm = 1.0; // /(((double) nPoints* ( double) nPoints)); //  1.0/sqrt(this->nPoints);    
+  
+//   cout <<  "norm = " << norm << endl;
+  
   this->pSpectrum = new double[array_size];
   
   this->pSpectrum[0] = norm * chop(this->fft_output[0][0])*chop(this->fft_output[0][0]);
   for(int j = 1; j< (array_size-1); j++)
     {
-      this->pSpectrum[j] = norm * 2.0 * (  chop(this->fft_output[j][0])* chop(this->fft_output[j][0]) + chop(this->fft_output[j][1]) * chop(this->fft_output[j][1])   );
+      this->pSpectrum[j] = norm *  (  chop(this->fft_output[j][0])* chop(this->fft_output[j][0]) + chop(this->fft_output[j][1]) * chop(this->fft_output[j][1])   );
       
       this->pSpectrum[j] = chop( this->pSpectrum[j] );
       

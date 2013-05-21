@@ -58,7 +58,6 @@ do
 		    cat pbs_template.tpl | sed -e "s/\${tmp}/$tmpdir/g" -e "s/\${storage}/$storagedir/g" -e "s/\${alpha}/$alpha/g" -e "s/\${threshold}/$threshold/g" -e "s/\${beta}/$beta/g" -e "s/\${threads}/$threads/g" > $file
 		    qsub -f $file >> jobs_ids.txt
 		  else
-
 		    ./main.x  --threads $threads --alpha $alpha --beta $beta --threshold $threshold --storage "$storage" --tmp "$tmp"
 # 		    echo "plotting"
 # 		    gnuplot "d_"$d"0_beta"$beta"_t100_plot.gnu"
