@@ -1,5 +1,5 @@
 #include "main.hh"
-
+#include <map>
 
 using namespace std;
 
@@ -67,10 +67,19 @@ int main(int argc, char ** argv) {
     sprintf(results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_results.txt" , storagePath, alpha, skewness, threshold );
     ofstream results(results_filename, ios_base::out);
     
+	
+	char additional_results_filename[200];
+    sprintf(additional_results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_additional_results.txt" , storagePath, alpha, skewness, threshold );
+	ofstream additiona_results(additional_results_filename, ios_base::out);
+	
 	char frequencies_filename[200];
 	char spectrum_filename[200];
 	char plot_filename[200];
 	char psplot_filename[200];
+	
+	
+	map<double,double> * snrValues = new map<double,double>();
+	map<double,double> * specAmplValues = new map<double,double>();
 	
     for( double sigm = sigmaStart; sigm < sigmaEnd; sigm+=sigmaInc ) 
     {	
@@ -181,6 +190,10 @@ int main(int argc, char ** argv) {
 	    double snrVal = snr.getSNR();
 		
 		double eta = snr.getSpectralAmplification();
+		
+		
+		snrValues->operator[](sigm) = snrVal;
+		specAmplValues->operator[](sigm) = eta;
 	    
 	    results << sigm << "\t" << snrVal << "\t" << eta <<"\n";
 	    
@@ -195,7 +208,34 @@ int main(int argc, char ** argv) {
     }
     
     results.close();
-    
+	
+	
+	//find maximums
+	map<double,double>::iterator it;
+	
+	double max_snr = 0.0;
+	double max_snr_sigma = 0.0;
+	for (it=snrValues->begin(); it!=snrValues->end(); ++it)
+	{
+	  if(max_snr < it->second) {
+		max_snr = it->second;
+		max_snr_sigma = it->first;
+	  }
+	}
+	double max_eta = 0.0;
+	double max_eta_sigma = 0.0;
+	for (it=specAmplValues->begin(); it!=specAmplValues->end(); ++it)
+	{
+	  if(max_eta < it->second) {
+		max_eta = it->second;
+		max_eta_sigma = it->first;
+	  }
+	}
+	
+	additiona_results << "#threshold\tsigma for max SNR \t  sigma for max eta\t maxSNR/maxETA\t maxETA/maxSNR\n";
+	additiona_results <<threshold << setprecision(8) <<"\t"<< max_snr_sigma << "\t" << max_eta_sigma << "\t"<<(max_snr_sigma/max_eta_sigma) << "\t" <<(max_eta_sigma/max_snr_sigma) << endl;
+	
+    additiona_results.close();
     cout << "results saved to '" << results_filename <<"'"<<endl;
     
      //    cout << "del filtered" <<endl;
@@ -205,7 +245,8 @@ int main(int argc, char ** argv) {
     delete generator;
     
     
-	
+	delete snrValues;
+	delete specAmplValues;
 	
 //     cout << "asdf"<<endl;
     delete rand;
