@@ -67,7 +67,8 @@ int main(int argc, char ** argv) {
     sprintf(results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_results.txt" , storagePath, alpha, skewness, threshold );
     ofstream results(results_filename, ios_base::out);
     
-	
+	results << "#sigma\tSNR\teta\n";
+    
 	char additional_results_filename[200];
     sprintf(additional_results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_additional_results.txt" , storagePath, alpha, skewness, threshold );
 	ofstream additiona_results(additional_results_filename, ios_base::out);
@@ -162,32 +163,29 @@ int main(int argc, char ** argv) {
 		
 		
 // 	    	cout << "fq"<<endl;
-	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
+// 	        double * freqs = PowerSpectrum2d::getFrequencies(size, dt);
 	    
 			
 // 			cout << "save" <<endl;
-			 sprintf(frequencies_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_freq.txt" , storagePath, alpha, skewness, threshold , sigm);	
+// 			 sprintf(frequencies_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_freq.txt" , storagePath, alpha, skewness, threshold , sigm);	
 
-	        System::saveArray( frequencies_filename, freqs, spectrumSize );
-	    
+// 	        System::saveArray( frequencies_filename, freqs, spectrumSize );
+// 		delete[] freqs;
 			
 			
 
-	    sprintf(spectrum_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_pspectr.txt" , storagePath, alpha, skewness, threshold , sigm);	
-		System::saveArray( spectrum_filename, averageSpectrum, spectrumSize );
+// 	    sprintf(spectrum_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_pspectr.txt" , storagePath, alpha, skewness, threshold , sigm);	
+// 		System::saveArray( spectrum_filename, averageSpectrum, spectrumSize );
 	    
 		
 		
-		sprintf(plot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.gn" , storagePath, alpha, skewness, threshold , sigm);
-		GnuplotScriptMaker * scriptMaker = new GnuplotScriptMaker(plot_filename);
+// 		sprintf(plot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.gn" , storagePath, alpha, skewness, threshold , sigm);
+// 		GnuplotScriptMaker * scriptMaker = new GnuplotScriptMaker(plot_filename);
 		
+// 		sprintf(psplot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.png" , storagePath, alpha, skewness, threshold ,sigm );
+// 		scriptMaker->addPowerSpectrumPlot(frequencies_filename, spectrum_filename, psplot_filename, &snr);
 		
-	    
-		
-		sprintf(psplot_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma%2.2f_plot.png" , storagePath, alpha, skewness, threshold ,sigm );
-		scriptMaker->addPowerSpectrumPlot(frequencies_filename, spectrum_filename, psplot_filename, &snr);
-		
-	    double snrVal = snr.getSNR();
+		double snrVal = snr.getSNR();
 		
 		double eta = snr.getSpectralAmplification();
 		
@@ -204,7 +202,7 @@ int main(int argc, char ** argv) {
 	    
 	    delete averageSpectrum;
         delete avps;
-		delete scriptMaker;
+// 		delete scriptMaker;
     }
     
     results.close();
@@ -232,8 +230,9 @@ int main(int argc, char ** argv) {
 	  }
 	}
 	
-	additiona_results << "#threshold\tsigma for max SNR \t  sigma for max eta\t maxSNR/maxETA\t maxETA/maxSNR\n";
-	additiona_results <<threshold << setprecision(8) <<"\t"<< max_snr_sigma << "\t" << max_eta_sigma << "\t"<<(max_snr_sigma/max_eta_sigma) << "\t" <<(max_eta_sigma/max_snr_sigma) << endl;
+	additiona_results << "#alpha\t beta \t threshold\t sigma_opt \t eta_max \t SNR_sigma_opt\n";
+	additiona_results << alpha << "\t" << skewness << "\t" << threshold << "\t" << setprecision(4) << max_eta_sigma << "\t" << max_eta << "\t" << max_snr_sigma << endl;
+
 	
     additiona_results.close();
     cout << "results saved to '" << results_filename <<"'"<<endl;
