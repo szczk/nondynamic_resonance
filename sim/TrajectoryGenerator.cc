@@ -20,7 +20,7 @@ double TrajectoryGenerator:: getX(double &t)
 {
   double signal = sin( 2 * M_PI * omega * t);
   //M_SQRT1_2
-  double noise = noiseIntensity *  rand->getLevyStable( alpha, skewness_beta, M_SQRT1_2 , 0.0);
+  double noise = noiseIntensity *  rand->getLevyStable( alpha, skewness_beta, 1.0 , 0.0);
   
   
   return signal + noise;
