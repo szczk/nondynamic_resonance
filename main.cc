@@ -67,7 +67,7 @@ int main(int argc, char ** argv) {
     sprintf(results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_results.txt" , storagePath, alpha, skewness, threshold );
     ofstream results(results_filename, ios_base::out);
     
-	results << "#sigma\tSNR\teta\n";
+	results << "#" << "alpha\tsigma\tSNR\teta\n";
     
 	char additional_results_filename[200];
     sprintf(additional_results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_additional_results.txt" , storagePath, alpha, skewness, threshold );
@@ -193,7 +193,7 @@ int main(int argc, char ** argv) {
 		snrValues->operator[](sigm) = snrVal;
 		specAmplValues->operator[](sigm) = eta;
 	    
-	    results << sigm << "\t" << snrVal << "\t" << eta <<"\n";
+	    results << alpha << "\t" << sigm << "\t" << snrVal << "\t" << eta <<"\n";
 	    
 	    cout << "****************************************\n";
 	    cout << "sigma = " << sigm << "\t spectral ampl=" << eta <<"\t SNR = " << snrVal <<"\n";

@@ -44,9 +44,9 @@ echo "\n"
 
 
 
-for alpha in 1.5 #$(seq -w 0.8 0.2 2.0)
+for alpha in $(seq -w 0.5 0.01 2.0)
 do
-  for beta in 0.5  #$(seq -w -1.0 0.25 1.0)
+  for beta in 0.0  #$(seq -w -1.0 0.25 1.0)
   do
     for threshold in 1.5
       do
