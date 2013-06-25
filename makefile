@@ -10,7 +10,7 @@ CPP = g++
 INCLUDEFLAGS := $(patsubst %, -I%, $(DIRS)) 
 LIBCC := $(shell find $(DIRS) -maxdepth 1 -name '*.cc')
 
-# CXXFLAGS += $(shell root-config --cflags) -O3 -Wall
+CXXFLAGS += $(shell root-config --cflags) -O3 -Wall
 CXXFLAGS += -O4 -Wall -std=c++0x -D_GLIBCXX_USE_NANOSLEEP 
 
 # XMLRPC = $(shell xmlrpc-c-config c++ libwww-client --libs)
@@ -19,7 +19,7 @@ CXXFLAGS += -O4 -Wall -std=c++0x -D_GLIBCXX_USE_NANOSLEEP
 GSLLIBS = -lgsl -lgslcblas -lfftw3_threads -lfftw3 -lfftw3f
 
 
-# LDFLAGS += $(shell root-config --glibs) $(GSLLIBS) $(XMLRPC) -O3 -Wall
+LDFLAGS += $(shell root-config --glibs) $(GSLLIBS) $(XMLRPC) -O3 -Wall
 LDFLAGS += $(GSLLIBS) $(XMLRPC) -O3 -Wall -pthread
 
 

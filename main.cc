@@ -1,5 +1,7 @@
 #include "main.hh"
 #include <map>
+#include "TH1D.h"
+#include "TCanvas.h"
 
 using namespace std;
 
@@ -73,11 +75,13 @@ int main(int argc, char ** argv) {
     sprintf(additional_results_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_additional_results.txt" , storagePath, alpha, skewness, threshold );
 	ofstream additiona_results(additional_results_filename, ios_base::out);
 	
-	char frequencies_filename[200];
-	char spectrum_filename[200];
-	char plot_filename[200];
-	char psplot_filename[200];
+// 	char frequencies_filename[200];
+// 	char spectrum_filename[200];
+// 	char plot_filename[200];
+// 	char psplot_filename[200];
 	
+	
+	TCanvas * canvas = new TCanvas("canvas","canvas",10, 10, 800,600);
 	
 	map<double,double> * snrValues = new map<double,double>();
 	map<double,double> * specAmplValues = new map<double,double>();
@@ -88,7 +92,10 @@ int main(int argc, char ** argv) {
       
 	    generator->setNoiseIntensity(sigm);
       
-
+		char residence_times_filename[200];
+		sprintf(residence_times_filename, "alpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma_%2.2f" , alpha, skewness, threshold, sigm );
+		
+		TH1D * residenceTimes = new TH1D(residence_times_filename,residence_times_filename,100,0.0,0.2);
 	    AveragePowerSpectrum * avps = new AveragePowerSpectrum();
 	    
 	    int spectrumSize = 0;
@@ -103,17 +110,39 @@ int main(int argc, char ** argv) {
 		
 		double * filtered = new double[size];
 	      
+		
+		bool inUp = false;
+		double upStart = 0.0;
 		for(unsigned int i = 0; i < size; i++)
 		{
 		  time[i] = i*dt;
 		  filtered[i] = filter( threshold, signal[i]);
+		  
+		  if(i>0) {
+			
+			if( filtered[i] == 1 &&  !inUp )
+			{
+			  inUp = true;
+			  upStart = time[i];
+			}
+			
+			if( filtered[i] == 0  &&  inUp )
+			{
+			  inUp = false;
+			  double duration = time[i] - upStart;
+			  residenceTimes->Fill( duration * omega );
+// 			  cout << "residence time: " << duration << " * omega  = " <<  duration * omega << "\n";
+			}
+			
+		  }
 		}
-	    //     cout << "save" <<endl;
-	    //     System::saveArrays( "signal.txt", time, signal, size );
+// 	        cout << "save" <<endl;
+// 	    System::saveArrays( "signal.txt", time, signal, size );
 // 		System::saveArrays( "filtered.txt", time, filtered, size );
+		
 	    // 
 	    //     
-	    //     cout << "fft" <<endl;
+// 	        cout << "fft" <<endl;
 	    //     
 		PowerSpectrum2d * pSpec = new PowerSpectrum2d( filtered, size );
 		pSpec->setVerbose(false);
@@ -121,13 +150,13 @@ int main(int argc, char ** argv) {
 		pSpec->evaluate();
 // 		pSpec->info();
 		
-	    //     cout << "spec"<<endl;
+// 	        cout << "spec"<<endl;
 		double * spectrum = pSpec->getValues();
-		
+// 		 cout << "spec"<<endl;
 		spectrumSize = pSpec->getK();
 		
 		avps->setSize(spectrumSize);
-		
+// 		 cout << "add values"<<endl;
 		avps->addValues(spectrum);
 		
 	    //     cout << "save" << endl;
@@ -142,9 +171,9 @@ int main(int argc, char ** argv) {
 		
 		
 		
-	    //     cout << "del signal" <<endl;
+// 	        cout << "del signal" <<endl;
 		delete[] signal;
-	    //     cout << "del time" <<endl;
+// 	        cout << "del time" <<endl;
 		delete[] time;
 
 	    //     cout << "del freqs" <<endl;
@@ -153,7 +182,7 @@ int main(int argc, char ** argv) {
 	    //     cout << "del spectrum" << endl;
 		//delete[] spectrum;
 		
-	    //     cout << "del pSpec" <<endl;
+// 	        cout << "del pSpec" <<endl;
 		delete pSpec;
 	    
 	    }
@@ -203,7 +232,23 @@ int main(int argc, char ** argv) {
 	    delete averageSpectrum;
         delete avps;
 // 		delete scriptMaker;
+		
+		residenceTimes->Draw();
+		residenceTimes->SetXTitle("t/T");
+		canvas->Update();
+		canvas->Draw();
+		
+		
+// 		char residence_times_filename[200];
+		sprintf(residence_times_filename, "%salpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma_%2.2f.png" , storagePath, alpha, skewness, threshold, sigm );
+		
+// 		
+		canvas->Print(residence_times_filename,"png");
+		
+		delete residenceTimes;
     }
+    
+    delete canvas;
     
     results.close();
 	
