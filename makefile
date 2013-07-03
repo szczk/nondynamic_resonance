@@ -1,7 +1,7 @@
 DIRS := core sim tools
 PROGNAME = main
 OBJDIR = obj
-.PHONY: all clean run test
+.PHONY: all clean run test del
 
 
 CPP = g++ 
@@ -45,6 +45,9 @@ run:
 
 clean:
 	rm $(LIBOBJ) *.x
+
+del:
+	rm *.txt *.png
 
 test:
 	$(CPP) test_randoms.cc core/Randoms.o $(CXXFLAGS) $(shell root-config --cflags) $(INCLUDEFLAGS) $(LDFLAGS) $(shell root-config --glibs) -o test_randoms.x

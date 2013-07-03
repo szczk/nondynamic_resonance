@@ -95,7 +95,7 @@ int main(int argc, char ** argv) {
 		char residence_times_filename[200];
 		sprintf(residence_times_filename, "alpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma_%2.2f" , alpha, skewness, threshold, sigm );
 		
-		TH1D * residenceTimes = new TH1D(residence_times_filename,residence_times_filename,100,0.0,0.2);
+		TH1D * residenceTimes = new TH1D(residence_times_filename,residence_times_filename,10000,0.0,10.0);
 	    AveragePowerSpectrum * avps = new AveragePowerSpectrum();
 	    
 	    int spectrumSize = 0;
@@ -118,28 +118,41 @@ int main(int argc, char ** argv) {
 		  time[i] = i*dt;
 		  filtered[i] = filter( threshold, signal[i]);
 		  
+		  
+		  
 		  if(i>0) {
+			
+			
+// 			  cout <<"i = " << i << "\tx(t="<< time[i] <<")="<<signal[i]<<"\ty(t)="<<filtered[i]<<endl;
+			
+			if( filtered[i] == 0  &&  inUp )
+			{
+			  upStart = time[i];
+			  inUp = false;
+			}
 			
 			if( filtered[i] == 1 &&  !inUp )
 			{
 			  inUp = true;
-			  upStart = time[i];
+			  double duration = time[i] - upStart;
+			  residenceTimes->Fill( duration  *omega ); //
 			}
 			
-			if( filtered[i] == 0  &&  inUp )
-			{
-			  inUp = false;
-			  double duration = time[i] - upStart;
-			  residenceTimes->Fill( duration * omega );
-// 			  cout << "residence time: " << duration << " * omega  = " <<  duration * omega << "\n";
-			}
 			
 		  }
 		}
 // 	        cout << "save" <<endl;
-// 	    System::saveArrays( "signal.txt", time, signal, size );
-// 		System::saveArrays( "filtered.txt", time, filtered, size );
-		
+
+// 	  if(t==10) {
+// 		char traj_filename[200];
+// 		sprintf(traj_filename, "alpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma_%2.2f_t_%i.txt" , alpha, skewness, threshold, sigm , t );  
+// 		
+//         char filtered_traj_filename[200];
+// 		sprintf(filtered_traj_filename, "alpha_%2.2f_beta_%2.2f_thr_%2.2f_sigma_%2.2f_ft_%i.txt" , alpha, skewness, threshold, sigm , t );
+// 		
+// 	    System::saveArrays( traj_filename, time, signal, size );
+// 		System::saveArrays( filtered_traj_filename, time, filtered, size );
+// 	  }
 	    // 
 	    //     
 // 	        cout << "fft" <<endl;

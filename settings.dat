@@ -1,11 +1,12 @@
 # repeates
-ntrajectories= 500
+ntrajectories= 1000
 
 # time step
 dt = 1.0e-2
 
 #signal length =  2^n
-signal_length_power = 16
+
+signal_length_power = 18
 
 #treshold
 treshold = 1.5
@@ -20,13 +21,13 @@ levy_alpha = 2.0
 levy_beta = 0.0
 
 #noise intensity start
-sigma_start = 5.5
+sigma_start = 0.1
 
 #noise intensity end
-sigma_end = 5.6
+sigma_end = 6.1
 
 #noise intensity step
-sigma_inc = 1.0;
+sigma_inc = 0.1;
 
 #############################################
 
